@@ -1,0 +1,123 @@
+<!--
+ * @Description: 
+ * @Autor: ChenXingZhou
+ * @Date: 2019-10-15 17:15:05
+ * @LastEditTime: 2019-10-16 08:58:49
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  #bbbb{
+    border-bottom:1px solid red;
+    width:200px;
+    position:fixed;
+    right:0px;
+    top:0px;
+  }
+  #bbbb h1{
+    margin:0;
+    padding:0px;
+  }
+  #bbbb h2{
+    margin:0;
+    padding:0px;
+  }
+  #bbbb h2 a{
+    padding-left:20px;
+  }
+  #bbbb h3 a{
+    padding-left:40px;
+  }
+  #bbbb h3{
+    
+    margin:0;
+    padding:0px;
+  }
+  #aaa p{
+    height:200px;
+  }
+  </style>
+</head>
+<body>
+    <div id="bbbb"></div>
+    <div id="aaa"></div>
+<script>
+
+ var htmlStr = `
+ <div>
+  <h1>一级标题1</h1>
+  <h2>二级标题2</h2>
+  <p>测试</p>
+  <p>测试</p>
+  <p>测试</p>
+  <p>测试</p>
+  <h2>二级标题3</h2>
+  <h3>三级标题4</h3>
+  <p>测试</p>
+  <p>测试</p>
+  <p>测试</p>
+  <h1>一级标题5</h1>
+  <h2>二级标题6-1</h2>
+  <h3>三级标题7</h3>
+  <p>测试</p>
+  <p>测试</p>
+  <p>测试</p>
+  <h2>二级标题8</h2>
+  <h3>三级标题9</h3>
+  <h1>一级标题10</h1>
+  <h1>一级标题1</h1>
+  <h1>一级标题12</h1>
+  <h2>二级标题13</h2>
+  <p>测试</p>
+  <p>测试</p>
+  <p>测试</p>
+  <p>测试</p>
+  <h2>二级标题14</h2>
+  <h3>三级标题15</h3>
+  
+</div>
+ `  
+
+ window.onload = function(){
+  var section = getNavAndArticle();
+  document.getElementById('aaa').innerHTML = section.article;
+  document.getElementById('bbbb').innerHTML = section.nav;
+ }
+function getNavAndArticle(){
+  var pattern = /([^>]*)(<([a-z/][-a-z0-9_:.]*)[^>/]*(\/*)>)([^<]*)/g,matchArr;
+  var navHtml = "";
+  var articleHtml = "";
+  var href = "";
+  var count = 0;
+  var name = "";
+  while ((matchArr = pattern.exec(htmlStr))) {
+      var textBefore = matchArr[1],  //获取排在标签前的文本
+          elem = matchArr[2],        //获取整个开标签或闭标签
+          elemName = matchArr[3],    //获取标签名
+          closeSign = matchArr[4],   //判断是否为自闭合标签标记
+          textAfter = matchArr[5];   //获取排在标签后的文本
+          name = "id" + count;
+          href = '#' + name;
+          count++;
+      if(elemName == "h1" || elemName == "h2" || elemName == "h3" ||  elemName == "h4" || elemName == "h5" || elemName == "h6"){
+        navHtml += "<" + elemName +"><a href='" + href +"'>" + textAfter +  "</a></" + elemName +">";
+        articleHtml += '<h1 id="' + name +'">' + textAfter +'</h1>'
+      }else{
+        articleHtml += '<' +  elemName  +'>' + textAfter + "</"  + elemName+  ">";
+      }
+  }
+  return {
+    nav:navHtml,
+    article:articleHtml
+  };
+}
+
+
+</script>  
+</body>
+</html>
